@@ -86,7 +86,7 @@ async function handleCreateRace() {
 	.catch(err => console.log(err))
 
 	// TODO - update the store with the race id
-	store.race_id = raceID
+	store.race_id = raceID-1
 	// The race has been created, now start the countdown
 	// TODO - call the async function runCountdown
 	await runCountdown()
@@ -101,7 +101,7 @@ function runRace(raceID) {
 		return new Promise(resolve => {
 			// TODO - use Javascript's built in setInterval method to get race info every 500ms
 				const raceInterval = setInterval(() => {
-					getRace(raceID-1)
+					getRace(raceID)
 					.then(result => result)
 					.then(info => {
 						if(info.status === 'in-progress'){
@@ -177,7 +177,7 @@ function handleSelectTrack(target) {
 }
 
 function handleAccelerate() {
-	const raceID = store.race_id-1
+	const raceID = store.race_id
 	// TODO - Invoke the API call to accelerate
 	accelerate(raceID)
 }
@@ -368,8 +368,7 @@ function getRace(id) {
 }
 
 function startRace(id) {
-	const raceID = id-1
-	return fetch(`${SERVER}/api/races/${raceID}/start`, {
+	return fetch(`${SERVER}/api/races/${id}/start`, {
 		method: 'POST',
 		...defaultFetchOpts(),
 		dataType: 'jsonp',
